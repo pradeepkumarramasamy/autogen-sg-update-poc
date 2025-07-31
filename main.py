@@ -1,50 +1,50 @@
 from autogen import AssistantAgent, UserProxyAgent, GroupChat, GroupChatManager
 import json
 
-# Load OpenAI config
+# Load OpenAI API key and config
 with open("config.json") as f:
     config = json.load(f)
 
 llm_config = {
     "config_list": config["config_list"],
-    "temperature": 0,
-    "request_timeout": 60,
+    "temperature": 0
 }
 
 # Define agents
 updater_agent = AssistantAgent(
     name="UpdaterAgent",
     llm_config=llm_config,
-    system_message="You update security group JSON templates by adding new ingress rules based on port numbers."
+    system_message="You update CloudFormation JSON templates to add new ingress rules."
 )
 
 committer_agent = AssistantAgent(
     name="CommitterAgent",
     llm_config=llm_config,
-    system_message="You commit and push modified CloudFormation templates to GitHub using GitPython."
+    system_message="You commit and push updated CloudFormation templates using GitPython."
 )
 
 deployer_agent = AssistantAgent(
     name="DeployerAgent",
     llm_config=llm_config,
-    system_message="You deploy updated CloudFormation templates to AWS using boto3."
+    system_message="You deploy CloudFormation stacks using boto3."
 )
 
+# UserProxyAgent is the only one that can actually execute code
 user_proxy = UserProxyAgent(
     name="Coordinator",
-    code_execution_config={"use_docker": False},
+    code_execution_config={"use_docker": False}
 )
 
-# Group chat flow
+# Group chat setup
 groupchat = GroupChat(
     agents=[user_proxy, updater_agent, committer_agent, deployer_agent],
     messages=[],
-    max_round=6,
+    max_round=5,
 )
 
 manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
-# Register the real task
+# ✅ Actual work: update + git commit + deploy
 @user_proxy.register_for_execution()
 def coordinate_flow():
     from agents.security_group_updater import update_security_group
@@ -66,5 +66,8 @@ def coordinate_flow():
 
     return "✅ All security group templates updated, committed, and deployed."
 
-# Run the agent chat orchestration
-user_proxy.initiate_chat(manager, message="Please update all security groups and deploy them to AWS.")
+# 🔁 Start the agent chat and execute the registered flow
+# Force execution directly
+if __name__ == "__main__":
+    coordinate_flow()
+
