@@ -61,7 +61,7 @@ def coordinate_flow():
             update_security_group(template_path, port)
 
         commit_and_push_changes(".", f"AutoGen Agent update: opened ports {ports} in {template_path}")
-        stack_name = template_path.split("/")[-1].replace(".json", "").replace("-", "_") + "_stack"
+        stack_name = template_path.split("/")[-1].replace(".json", "").replace("_", "-") + "-stack"
         deploy_cft(template_path, stack_name)
 
     return "✅ All security group templates updated, committed, and deployed."
