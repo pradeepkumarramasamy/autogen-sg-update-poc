@@ -11,7 +11,7 @@
             "IpProtocol": "tcp",
             "FromPort": 3306,
             "ToPort": 3306,
-            "SourceSecurityGroupId": "sg-xxxxxxxx"
+            "SourceSecurityGroupId": "sg-09df0c4515f0c40e2"
           }
         ]
       }
