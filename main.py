@@ -8,7 +8,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from tools import (
     add_ingress_port_tool,
     commit_template_tool,
-    deploy_stack_tool,
+    #deploy_stack_tool,
 )
 
 # ✅ Load OpenAI model config
@@ -37,7 +37,7 @@ assistant = AssistantAgent(
     tools=[
         add_ingress_port_tool,
         commit_template_tool,
-        deploy_stack_tool,
+       # deploy_stack_tool,
     ]
 )
 

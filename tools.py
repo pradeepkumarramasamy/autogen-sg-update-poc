@@ -11,13 +11,24 @@ def add_ingress_port(template_path: str, port: int) -> str:
     update_security_group(template_path, port)
     return f"✅ Port {port} added to {template_path}"
 
-def commit_template(repo_path: str, message: str) -> str:
+'''def commit_template(repo_path: str, message: str) -> str:
     repo = Repo(repo_path, search_parent_directories=True)
     return commit_and_push_changes(repo_path, message)
 
 def deploy_stack(template_path: str, stack_name: str) -> str:
     deploy_cft(template_path, stack_name)
-    return f"✅ Stack '{stack_name}' deployed using {template_path}"
+    return f"✅ Stack '{stack_name}' deployed using {template_path}"'''
+
+def commit_template(repo_path: str, message: str) -> str:
+    repo = Repo(repo_path, search_parent_directories=True)
+    commit_result = commit_and_push_changes(repo_path, message)
+
+    # 🚀 Trigger deployment right after commit
+    template_path = f"{repo_path}/web-sg.json"
+    stack_name = "web_sg_stack"
+    deploy_cft(template_path, stack_name)
+    return f"{commit_result}\n🚀 Deployed stack '{stack_name}' with updated template."
+
 
 # Create instances of FunctionTool for each function to be used as a tool
 add_ingress_port_tool = FunctionTool(
@@ -31,10 +42,10 @@ commit_template_tool = FunctionTool(
                 "Takes the path to the repository folder (not a file) and a commit message."
 )
 
-deploy_stack_tool = FunctionTool(
+'''deploy_stack_tool = FunctionTool(
     deploy_stack,
     description="Deploys a CloudFormation stack using the provided JSON template."
-)
+)'''
 
 # You can then expose these `_tool` variables for use in your agents,
 # or register them with the agents using `register_for_llm` and `register_for_execution`,
