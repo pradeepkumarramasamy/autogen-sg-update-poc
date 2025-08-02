@@ -1,5 +1,6 @@
 # tools.py
 from autogen_core.tools import FunctionTool
+from git import Repo
 
 # Assuming these imports are correct and represent your actual functions
 from agents.security_group_updater import update_security_group
@@ -11,6 +12,7 @@ def add_ingress_port(template_path: str, port: int) -> str:
     return f"✅ Port {port} added to {template_path}"
 
 def commit_template(repo_path: str, message: str) -> str:
+    repo = Repo(repo_path, search_parent_directories=True)
     return commit_and_push_changes(repo_path, message)
 
 def deploy_stack(template_path: str, stack_name: str) -> str:
