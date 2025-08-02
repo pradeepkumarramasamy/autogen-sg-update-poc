@@ -43,7 +43,7 @@ assistant = AssistantAgent(
 
 # ✅ Construct user message manually
 message = UserMessage(
-    content="Please add port 5432 to cft/web-sg.json, commit it with the message "
+    content="Please add port 1234 to cft/web-sg.json, commit it with the message "
             "'AutoGen update: open port 5432', and deploy to the stack named 'web_sg_stack'.",
     source="user"
 )
@@ -52,7 +52,7 @@ message = UserMessage(
 # ✅ Run assistant agent to process the message and invoke tools
 async def main():
     response = await assistant.run(
-        task="Please add port 5432 to cft/web-sg.json, commit it with the message "
+        task="Please add port 1234 to cft/web-sg.json, commit it with the message "
              "'AutoGen update: open port 5432', and deploy to the stack named 'web_sg_stack'."
     )
     print("--- Assistant Response ---")
