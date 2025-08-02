@@ -1,0 +1,11 @@
+python-dotenv
+autogen-core
+autogen-agentchat
+autogen-ext[openai,ollama]
+ipykernel
+Pillow
+streamlit
+fastapi
+uvicorn
+pytest-playwright
+boto3
