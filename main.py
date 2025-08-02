@@ -52,7 +52,7 @@ message = UserMessage(
 # ✅ Run assistant agent to process the message and invoke tools
 async def main():
     response = await assistant.run(
-        task="Please add port 3 to cft/web-sg.json, commit it with the message 'AutoGen update: open port 2', and make sure to deploy the stack named 'web_sg_stack' using the updated template."
+        task="Please add port 4 to cft/web-sg.json, commit it with the message 'AutoGen update: open port 4', and make sure to deploy the stack named 'web_sg_stack' using the updated template."
     )
     print("--- Assistant Response ---")
     print(response)

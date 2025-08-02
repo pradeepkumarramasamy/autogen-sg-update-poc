@@ -25,7 +25,7 @@ def commit_template(repo_path: str, message: str) -> str:
 
     # 🚀 Trigger deployment right after commit
     template_path = f"{repo_path}/web-sg.json"
-    stack_name = "web_sg_stack"
+    stack_name = "web-sg-stack"
     deploy_cft(template_path, stack_name)
     return f"{commit_result}\n🚀 Deployed stack '{stack_name}' with updated template."
 
