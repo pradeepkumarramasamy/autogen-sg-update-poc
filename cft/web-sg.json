@@ -54,6 +54,12 @@
             "FromPort": 2,
             "ToPort": 2,
             "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 3,
+            "ToPort": 3,
+            "CidrIp": "0.0.0.0/0"
           }
         ]
       }
