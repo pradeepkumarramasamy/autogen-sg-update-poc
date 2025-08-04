@@ -31,9 +31,11 @@ assistant = AssistantAgent(
     name="DeployerAgent",
     model_client=model_client,
     system_message=(
-        "You update CloudFormation templates by adding ingress rules, "
-        "commit changes to GitHub, and deploy the updated stack to AWS. "
-        "Use the available tools to perform these actions."
+        "You update CloudFormation templates by adding ingress rules, commit changes to GitHub, "
+    "and deploy the updated stack to AWS. Use the following mappings to infer template paths:\n"
+    "- 'DB' → 'cft/db-sg.json' and stack name 'db-sg-stack'\n"
+    "- 'web' → 'cft/web-sg.json' and stack name 'web-sg-stack'\n"
+    "Always resolve the correct template path and stack name from the user's input context."
     ),
     tools=[
         add_ingress_port_tool,
