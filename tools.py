@@ -1,4 +1,6 @@
 # tools.py
+import os
+import re
 from autogen_core.tools import FunctionTool
 from git import Repo
 
@@ -19,14 +21,24 @@ def deploy_stack(template_path: str, stack_name: str) -> str:
     deploy_cft(template_path, stack_name)
     return f"✅ Stack '{stack_name}' deployed using {template_path}"'''
 
-def commit_template(repo_path: str, message: str) -> str:
+def commit_template(repo_path: str, message: str, stack_name: str | None = None) -> str:
     repo = Repo(repo_path, search_parent_directories=True)
     commit_result = commit_and_push_changes(repo_path, message)
 
-    # 🚀 Trigger deployment right after commit
+    '''# 🚀 Trigger deployment right after commit
     template_path = f"{repo_path}/web-sg.json"
-    stack_name = "web-sg-stack"
-    deploy_cft(template_path, stack_name)
+    stack_name = "web-sg-stack"'''
+   # Infer template file from message or fallback
+    matches = re.findall(r'cft/([\w\-]+\.json)', message)
+    template_file = matches[0] if matches else "web-sg.json"
+    template_path = f"{repo_path}/{template_file}"
+
+    # Infer stack name if not provided
+    if not stack_name:
+        base = template_file.split(".")[0].replace("_", "-")
+        stack_name = base if base.endswith("-stack") else f"{base}-stack"
+    
+    deploy_cft(template_path, stack_name or "default-stack-name")
     return f"{commit_result}\n🚀 Deployed stack '{stack_name}' with updated template."
 
 
@@ -38,8 +50,11 @@ add_ingress_port_tool = FunctionTool(
 
 commit_template_tool = FunctionTool(
     commit_template,
-    description="Commits and pushes changes to a Git repository. "
-                "Takes the path to the repository folder (not a file) and a commit message."
+    description=(
+        "Commits and pushes changes to a Git repository and deploys the CloudFormation stack. "
+        "Provide: repo path, commit message, and optionally stack name. "
+        "If stack name is omitted, it will be inferred from the template file."
+    )
 )
 
 '''deploy_stack_tool = FunctionTool(
