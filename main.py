@@ -3,6 +3,7 @@ import json
 from autogen_core.models import UserMessage
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
+from autogen_agentchat.agents import UserProxyAgent
 
 # ✅ Your tools (FunctionTool wrapped functions)
 from tools import (
