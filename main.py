@@ -49,12 +49,12 @@ assistant = AssistantAgent(
     source="user"
 )'''
 
+# ✅ Take input from user
+user_input = input("Enter your deployment request: ")
 
 # ✅ Run assistant agent to process the message and invoke tools
 async def main():
-    response = await assistant.run(
-        task="Please add port 5 to cft/web-sg.json, commit it with the message 'AutoGen update: open port 5', and make sure to deploy the stack named 'web_sg_stack' using the updated template."
-    )
+    response = await assistant.run(task=user_input)
     print("--- Assistant Response ---")
     print(response)
 
